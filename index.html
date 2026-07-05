@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The AI PM Curriculum — 25 Concepts</title>
+<style>
+  :root {
+    --bg: #1C1D20;
+    --surface: #26272B;
+    --surface-2: #2E2F34;
+    --border: #383940;
+    --text: #F2F2F3;
+    --text-muted: #A1A1AA;
+    --text-dim: #71717A;
+    --signal: #FFD84D;
+    --text-on-signal: #1C1D20;
+    --good: #5DD39E;
+    --medium: #E76F2E;
+    --bad: #EF4444;
+    --good-bg: #17312A;
+    --medium-bg: #3A2922;
+    --radius: 14px;
+    --maxw: 1180px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Arial, sans-serif;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    font-size: 16.5px;
+  }
+
+  a { color: inherit; }
+
+  .wrap {
+    max-width: var(--maxw);
+    margin: 0 auto;
+    padding: 0 28px;
+  }
+
+  /* Hero */
+  header.hero {
+    padding: 88px 0 56px;
+    border-bottom: 1px solid var(--border);
+  }
+  .kicker {
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: var(--text-muted);
+    margin-bottom: 22px;
+  }
+  h1 {
+    font-size: clamp(34px, 5vw, 56px);
+    line-height: 1.05;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    max-width: 16ch;
+  }
+  h1 .hl { color: var(--signal); }
+  .lede {
+    margin-top: 24px;
+    font-size: clamp(17px, 2vw, 20px);
+    color: var(--text-muted);
+    max-width: 62ch;
+  }
+  .meta {
+    margin-top: 28px;
+    display: flex;
+    gap: 10px 26px;
+    flex-wrap: wrap;
+    font-size: 14px;
+    color: var(--text-dim);
+  }
+  .meta b { color: var(--text); font-weight: 600; }
+
+  /* Layout */
+  .layout {
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    gap: 56px;
+    padding: 48px 0 96px;
+    align-items: start;
+  }
+
+  nav.toc {
+    position: sticky;
+    top: 24px;
+    max-height: calc(100vh - 48px);
+    overflow-y: auto;
+    font-size: 13.5px;
+    padding-right: 8px;
+  }
+  nav.toc .toc-group {
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-dim);
+    margin: 22px 0 8px;
+  }
+  nav.toc .toc-group:first-child { margin-top: 0; }
+  nav.toc a {
+    display: block;
+    padding: 5px 10px;
+    border-radius: 8px;
+    color: var(--text-muted);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+  }
+  nav.toc a:hover { background: var(--surface); color: var(--text); }
+  nav.toc a .n {
+    display: inline-block;
+    width: 22px;
+    color: var(--text-dim);
+    font-variant-numeric: tabular-nums;
+  }
+
+  main { min-width: 0; }
+
+  section.part { margin-bottom: 56px; scroll-margin-top: 24px; }
+  .part-head {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 24px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .part-head .pnum {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--signal);
+    letter-spacing: 0.08em;
+  }
+  .part-head h2 {
+    font-size: 24px;
+    font-weight: 800;
+    letter-spacing: -0.01em;
+  }
+
+  article.concept {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 26px 28px;
+    margin-bottom: 18px;
+    scroll-margin-top: 24px;
+  }
+  article.concept h3 {
+    font-size: 19.5px;
+    font-weight: 700;
+    letter-spacing: -0.01em;
+    display: flex;
+    gap: 12px;
+    align-items: baseline;
+  }
+  article.concept h3 .idx {
+    font-variant-numeric: tabular-nums;
+    color: var(--text-dim);
+    font-size: 15px;
+    font-weight: 700;
+    min-width: 26px;
+  }
+  article.concept p { margin-top: 12px; color: var(--text); }
+  article.concept p.dim { color: var(--text-muted); }
+
+  .pm {
+    margin-top: 18px;
+    background: var(--medium-bg);
+    border-left: 3px solid var(--medium);
+    border-radius: 0 10px 10px 0;
+    padding: 14px 16px;
+  }
+  .pm .tag {
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--medium);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .pm p { margin: 0; color: var(--text); font-size: 15.5px; }
+
+  /* Summary */
+  section.summary {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 32px;
+    margin-bottom: 56px;
+    scroll-margin-top: 24px;
+  }
+  section.summary h2 { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+  section.summary .sub { color: var(--text-muted); margin-bottom: 20px; font-size: 15px; }
+  ul.takeaways { list-style: none; display: grid; gap: 12px; }
+  ul.takeaways li {
+    padding-left: 26px;
+    position: relative;
+    color: var(--text);
+  }
+  ul.takeaways li::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 10px;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--good);
+  }
+  ul.takeaways li b { color: var(--signal); font-weight: 700; }
+
+  /* Appendix */
+  section.appendix { scroll-margin-top: 24px; }
+  section.appendix h2 { font-size: 22px; font-weight: 800; margin-bottom: 6px; }
+  section.appendix .sub { color: var(--text-muted); margin-bottom: 22px; font-size: 15px; }
+  ol.links { list-style: none; counter-reset: lk; display: grid; gap: 4px; }
+  ol.links li {
+    counter-increment: lk;
+    display: grid;
+    grid-template-columns: 30px 1fr;
+    gap: 10px;
+    padding: 11px 14px;
+    border-radius: 10px;
+    border: 1px solid transparent;
+  }
+  ol.links li:hover { background: var(--surface); border-color: var(--border); }
+  ol.links li::before {
+    content: counter(lk);
+    color: var(--text-dim);
+    font-variant-numeric: tabular-nums;
+    font-size: 13px;
+    padding-top: 2px;
+  }
+  ol.links a { color: var(--text); text-decoration: none; font-weight: 600; }
+  ol.links a:hover { color: var(--signal); }
+  ol.links .u { display: block; color: var(--text-dim); font-size: 12.5px; word-break: break-all; margin-top: 2px; font-family: "SF Mono", ui-monospace, monospace; }
+
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 0 64px;
+    color: var(--text-dim);
+    font-size: 13.5px;
+  }
+  footer a { color: var(--text-muted); }
+
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; gap: 0; }
+    nav.toc { display: none; }
+    header.hero { padding: 56px 0 40px; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">AI Product Management &middot; Learning Guide</div>
+    <h1>The AI PM Curriculum: <span class="hl">25 concepts</span>, explained</h1>
+    <p class="lede">Every idea from Sid Arora's "master these" list, taught from first principles. For each concept: the plain-English definition, why it works, and the PM angle, what changes in how you build, price, or ship once you get it.</p>
+    <div class="meta">
+      <span><b>25</b> concepts</span>
+      <span><b>8</b> parts</span>
+      <span>Read top to bottom once for the map, then return per decision</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+<div class="layout">
+
+  <nav class="toc" aria-label="Table of contents">
+    <div class="toc-group">Foundations</div>
+    <a href="#c1"><span class="n">01</span>AI for PMs 101</a>
+    <a href="#c2"><span class="n">02</span>What is an AI PM</a>
+    <a href="#c3"><span class="n">03</span>AI vs ML vs DL</a>
+    <div class="toc-group">How models work</div>
+    <a href="#c4"><span class="n">04</span>Embeddings</a>
+    <a href="#c5"><span class="n">05</span>Learning to be helpful</a>
+    <a href="#c6"><span class="n">06</span>Mixture of Experts</a>
+    <a href="#c7"><span class="n">07</span>Synthetic data</a>
+    <div class="toc-group">Retrieval &amp; memory</div>
+    <a href="#c8"><span class="n">08</span>RAG</a>
+    <a href="#c9"><span class="n">09</span>Context engineering</a>
+    <a href="#c10"><span class="n">10</span>Context rot</a>
+    <a href="#c11"><span class="n">11</span>Why agents forget</a>
+    <a href="#c12"><span class="n">12</span>Prompt caching</a>
+    <div class="toc-group">Agents</div>
+    <a href="#c13"><span class="n">13</span>What are agents</a>
+    <a href="#c14"><span class="n">14</span>When to build one</a>
+    <a href="#c15"><span class="n">15</span>Agentic AI</a>
+    <a href="#c16"><span class="n">16</span>Replace vs augment</a>
+    <div class="toc-group">Choosing models</div>
+    <a href="#c17"><span class="n">17</span>Which model to use</a>
+    <a href="#c18"><span class="n">18</span>LLM routing</a>
+    <div class="toc-group">Quality &amp; ops</div>
+    <a href="#c19"><span class="n">19</span>Evals</a>
+    <a href="#c20"><span class="n">20</span>LLM-as-a-judge</a>
+    <a href="#c21"><span class="n">21</span>Guardrails</a>
+    <a href="#c22"><span class="n">22</span>Observability</a>
+    <a href="#c23"><span class="n">23</span>Measure &amp; improve</a>
+    <div class="toc-group">Strategy &amp; growth</div>
+    <a href="#c24"><span class="n">24</span>AI product strategy</a>
+    <a href="#c25"><span class="n">25</span>The AI flywheel</a>
+    <div class="toc-group">More</div>
+    <a href="#cbonus"><span class="n">+</span>Claude Code</a>
+    <a href="#summary"><span class="n">&#9733;</span>Summary</a>
+    <a href="#appendix"><span class="n">&#8599;</span>Source links</a>
+  </nav>
+
+  <main>
+
+    <!-- PART 1 -->
+    <section class="part" id="part1">
+      <div class="part-head"><span class="pnum">PART 1</span><h2>Foundations</h2></div>
+
+      <article class="concept" id="c1">
+        <h3><span class="idx">01</span>AI for PMs 101</h3>
+        <p>The PM job does not change with AI. You still find a real problem, decide what to build, and get it shipped. What changes is the material. Traditional software is deterministic: same input, same output, every time. AI is probabilistic: the same input can produce different outputs, and the system is confidently wrong sometimes.</p>
+        <p class="dim">That one shift cascades. Your acceptance criteria can no longer be "it returns the correct value." They become "it returns an acceptable value often enough, and fails safely the rest of the time." You manage a quality distribution, not a pass/fail test.</p>
+        <div class="pm"><span class="tag">PM angle</span><p>Stop specifying exact behavior. Specify acceptable ranges, failure modes, and the evaluation that proves you are inside the range. If you cannot describe "good enough" numerically, you are not ready to build.</p></div>
+      </article>
+
+      <article class="concept" id="c2">
+        <h3><span class="idx">02</span>What the Hell Is an AI PM</h3>
+        <p>An AI PM is a PM whose product's core value comes from a model's output rather than hand-written rules. The difference is not the title, it is where the risk lives. In classic PM, most risk is "will people want this and will engineering build it." In AI PM, a third risk sits in the middle: "will the model be good enough, reliably, at acceptable cost and latency." You cannot answer that from a spec. You build, measure, iterate against real data.</p>
+        <div class="pm"><span class="tag">PM angle</span><p>Budget for a discovery loop most roadmaps skip. Before you promise a feature, run a cheap prototype against real inputs and measure quality. Many great-sounding AI features die here, and finding out in week two is a win.</p></div>
+      </article>
+
+      <article class="concept" id="c3">
+        <h3><span class="idx">03</span>Fundamentals of AI (AI vs ML vs DL)</h3>
+        <p>Three nested circles. Artificial intelligence is the broad goal of machines doing intelligent-looking things. Machine learning is the subset where the machine learns patterns from data instead of being explicitly programmed. Deep learning is the subset of ML using many-layered neural networks, and it powers modern language and image models.</p>
+        <p class="dim">The mental model: classic software is rules in, answers out. Machine learning is examples in, rules out. You show it thousands of labeled cases, it infers the pattern, then applies it to cases it has never seen.</p>
+        <div class="pm"><span class="tag">PM angle</span><p>When someone proposes "let's use AI," ask what happens if you write it as rules. If a handful of if-statements solve it, do that, it is cheaper and predictable. Reach for ML when the rules are too many, too fuzzy, or keep changing.</p></div>
+      </article>
+    </section>
+
+    <!-- PART 2 -->
+    <section class="part" id="part2">
+      <div class="part-head"><span class="pnum">PART 2</span><h2>How Models Actually Work</h2></div>
+
+      <article class="concept" id="c4">
+        <h3><span class="idx">04</span>What Are Embeddings</h3>
+        <p>An embedding turns a piece of text (or image, or audio) into a list of numbers, a vector, that captures its meaning. Things that mean similar things land close together. "Dog" and "puppy" are near neighbors; "dog" and "tax return" are far apart. Computers cannot compare meaning directly, but they can compute distance between vectors instantly. Embeddings turn "is this similar in meaning" into cheap math.</p>
+        <div class="pm"><span class="tag">PM angle</span><p>Any time your product needs "find things like this" or "group these by topic," embeddings are the engine. They are cheap, fast, and need no big model at query time. Many features people assume need GPT-level compute just need good embeddings and vector search.</p></div>
+      </article>
+
+      <article class="concept" id="c5">
+        <h3><span class="idx">05</span>How LLMs Learn to Be Helpful</h3>
+        <p>A raw language model is trained to predict the next word across the whole internet. That makes it fluent, not helpful. It will happily continue a rude sentence or invent a fake citation, because it imitates patterns, not serves you. To make it useful, labs run a second stage: humans (and now other models) rank answers, and the model is tuned to prefer higher-rated ones. This is reinforcement learning from human feedback.</p>
+        <div class="pm"><span class="tag">PM angle</span><p>Helpfulness is a trained behavior, not a fact about the model. It reflects whoever did the ranking and what they valued. That is why models have different personalities and refusal patterns, and why your system prompt or fine-tuning can shift behavior for your product.</p></div>
+      </article>
+
+      <article class="concept" id="c6">
+        <h3><span class="idx">06</span>Mixture of Experts (MoE)</h3>
+        <p>Instead of one giant network where every token passes through every parameter, an MoE model has many specialized sub-networks and a router that sends each token to just a few. The model can be huge in total size but only activate a small slice per request. You get the capability of a very large model at the compute cost of a much smaller one, because most of the model is idle for any given token.</p>
+        <div class="pm"><span class="tag">PM angle</span><p>MoE is why frontier-quality models keep getting cheaper and faster to serve. "Total parameters" is a vanity number; what matters is active parameters per token, which drives your latency and cost. Ask vendors for that, not the headline size.</p></div>
+      </article>
+
+      <article class="concept" id="c7">
+        <h3><span class="idx">07</span>What Is Synthetic Data</h3>
+        <p>Synthetic data is training or testing data generated by a model rather than collected from humans. Instead of paying people to label ten thousand examples, a strong model produces them, then a smaller amount of human review keeps quality honest. It works because a capable model already encodes much of the pattern you want to teach a smaller or specialized model. You are distilling that knowledge into data.</p>
+        <div class="pm"><span class="tag">PM angle</span><p>Synthetic data unlocks products previously blocked on expensive labeling. The trap: train on a model's output and you inherit its biases and errors. Use it to bootstrap and cover rare edge cases, but validate against real data before you trust it.</p></div>
+      </article>
+    </section>
+
+    <!-- PART 3 -->
+    <section class="part" id="part3">
+      <div class="part-head"><span class="pnum">PART 3</span><h2>Retrieval, Context, and Memory</h2></div>
+
+      <article class="concept" id="c8">
+        <h3><span class="idx">08</span>What Is RAG</h3>
+        <p>A language model only knows what was in its training data, with a fixed cutoff date. Retrieval-augmented generation fixes both. Before answering, you retrieve relevant documents (usually via embedding search) and paste them into the prompt, so the model answers using your fresh, private, or specific content instead of frozen memory. User asks, you search your knowledge base for the most relevant chunks, you stuff those plus the question into the prompt, the model answers grounded in what you gave it.</p>
+        <div class="pm"><span class="tag">PM angle</span><p>RAG is the default for "chat with our docs / support / policies." Cheaper and faster than fine-tuning, and you update knowledge by updating documents, not retraining. Most enterprise AI is RAG. Your quality problems will usually be retrieval problems (wrong chunk fetched), not model problems.</p></div>
+      </article>
+
+      <article class="concept" id="c9">
+        <h3><span class="idx">09</span>Context Engineering</h3>
+        <p>Prompt engineering is wording one instruction well. Context engineering is the broader discipline of deciding everything that goes into the model's context window for a call: system instructions, retrieved documents, conversation history, tool outputs, examples, formatting. It is information logistics. The model has no memory beyond what you put in the window right now, so its answer is only as good as the material you assembled.</p>
+        <div class="pm"><span class="tag">PM angle</span><p>Most "the AI is dumb" complaints are context failures, not model failures. Before you upgrade to a pricier model, check whether you are feeding it the right context. A lot of quality lives here, and it is under your control.</p></div>
+      </article>
+
+      <article class="concept" id="c10">
+        <h3><span class="idx">10</span>Context Rot</h3>
+        <p>Longer conversations get worse, not better. As the window fills with history, the model's attention spreads thin, early instructions get diluted, contradictory bits pile up, and answers drift. The cause is structural: attention is a finite budget spread across every token. Double the tokens and each one gets less focus. A crucial instruction from twenty messages ago competes with a hundred irrelevant ones.</p>
+        <div class="pm"><span class="tag">PM angle</span><p>A bigger context window does not solve memory. Design for summarization and pruning: compress old turns, pin the load-bearing instructions, drop the noise. Products that let conversations grow unbounded feel great for five minutes, then get noticeably dumber.</p></div>
+      </article>
+
+      <article class="concept" id="c11">
+        <h3><span class="idx">11</span>Why Your AI Agent Always Forgets</h3>
+        <p>Related to context rot but distinct. An agent forgets because, by default, it has no memory between sessions and limited memory within one. Every call is stateless; the only thing it "remembers" is what you re-send in the context. Close the tab and it retains nothing. Real memory is something you build: store facts, summaries, and preferences in a database, then retrieve and inject the relevant ones at the start of each interaction.</p>
+        <div class="pm"><span class="tag">PM angle</span><p>If your product needs to remember users, that is your engineering work, not the model's. Decide what to remember, where to store it, and how to retrieve only the relevant bits, or you refill the window with junk and trigger context rot. Memory design carries real privacy implications.</p></div>
+      </article>
+
+      <article class="concept" id="c12">
+        <h3><span class="idx">12</span>Prompt Caching</h3>
+        <p>Many requests share a large, identical prefix: the same long system prompt, the same retrieved policy documents, the same few-shot examples. Reprocessing that prefix on every call is wasteful. Prompt caching stores the processed prefix so repeat calls skip the redundant work, often cutting cost on the cached portion by a large margin and returning first tokens faster.</p>
+        <div class="pm"><span class="tag">PM angle</span><p>If your product sends a big fixed prompt every request, caching is close to free money. Structure prompts so stable content sits at the front (cacheable) and variable content at the end. This is a cost-architecture decision PMs should push for; it changes unit economics directly.</p></div>
+      </article>
+    </section>
+
+    <!-- PART 4 -->
+    <section class="part" id="part4">
+      <div class="part-head"><span class="pnum">PART 4</span><h2>Agents</h2></div>
+
+      <article class="concept" id="c13">
+        <h3><span class="idx">13</span>What Are AI Agents</h3>
+        <p>A plain LLM call takes input and returns text. An agent adds a loop and tools. It can decide to take an action (search the web, query a database, call an API, run code), observe the result, and decide what to do next, repeating until the task is done. The model becomes the reasoning engine inside a system that can actually do things. The shift is from "answer a question" to "accomplish a multi-step goal."</p>
+        <div class="pm"><span class="tag">PM angle</span><p>Agents open up tasks a single response cannot handle: booking, research, multi-step workflows. They also multiply the failure surface, because each step can go wrong and errors compound. Start with the narrowest useful loop and add capability only when the simple version proves reliable.</p></div>
+      </article>
+
+      <article class="concept" id="c14">
+        <h3><span class="idx">14</span>When Should a PM Build an Agent</h3>
+        <p>Not every AI feature needs an agent, and agents are harder to make reliable. The rule: use a simple single call when the task is one step and the answer is the output. Reach for an agent only when the task genuinely requires multiple steps, external actions, or dynamic decisions you cannot script in advance. If you can write the steps as a fixed pipeline, do that, a hard-coded workflow with LLM calls at specific points is more reliable and cheaper.</p>
+        <div class="pm"><span class="tag">PM angle</span><p>Agents are the most over-applied pattern in AI right now. "Agentic" demos beautifully, then falls apart in production because every step compounds error and cost. Default to the simplest architecture that solves the problem. Justify an agent by the task's structure, not by hype.</p></div>
+      </article>
+
+      <article class="concept" id="c15">
+        <h3><span class="idx">15</span>Agentic AI</h3>
+        <p>The trajectory of AI products. Version one is a chatbot that answers questions. Version two acts on your behalf, remembers context, uses tools, and completes tasks with less hand-holding. "Agentic" describes that shift from answering to doing. It is a spectrum, not a switch: more agency means more usefulness but also more autonomy to get things wrong, and more trust required from the user.</p>
+        <div class="pm"><span class="tag">PM angle</span><p>Map your product's position on the agency spectrum and move deliberately. Users grant autonomy in proportion to trust, and trust is earned through reliability and reversibility. Give people visibility into what the agent is about to do and an easy undo. Rushing to full autonomy loses users after one bad action.</p></div>
+      </article>
+
+      <article class="concept" id="c16">
+        <h3><span class="idx">16</span>AI Agents Will Replace You</h3>
+        <p>The framing worth internalizing: in the near term, AI does not replace the person, it replaces the tasks. The people who benefit move up a level, from doing the task to directing and checking the AI that does it. ChatGPT made many people more capable by handling grunt work and freeing them for judgment. The risk is the flip side: lean on it without understanding, and you lose the skill and the ability to catch its mistakes.</p>
+        <div class="pm"><span class="tag">PM angle</span><p>Two lessons. Sell augmentation, not replacement; it lands better and is closer to true. And design for the human staying in the loop on judgment while the AI takes the toil. Durable AI products keep a capable human in charge and make that human dramatically faster.</p></div>
+      </article>
+    </section>
+
+    <!-- PART 5 -->
+    <section class="part" id="part5">
+      <div class="part-head"><span class="pnum">PART 5</span><h2>Choosing and Combining Models</h2></div>
+
+      <article class="concept" id="c17">
+        <h3><span class="idx">17</span>Which AI Model to Use</h3>
+        <p>There is no single best model. There is the best model for a specific task at a specific cost and latency. Frontier models are strongest and priciest; smaller and open models are weaker but cheaper and faster, often good enough for narrow tasks. The right answer comes from testing candidates on your actual task, not a leaderboard. Evaluate on four axes: quality on your task, cost per call, latency, and constraints like data residency or on-device needs.</p>
+        <div class="pm"><span class="tag">PM angle</span><p>Do not default to the most powerful model out of caution; it silently wrecks your unit economics. Run a quick bake-off on real inputs, pick the cheapest model that clears your quality bar, and re-check as new models ship. Model choice is a recurring decision, not a one-time one.</p></div>
+      </article>
+
+      <article class="concept" id="c18">
+        <h3><span class="idx">18</span>LLM Routing</h3>
+        <p>Once different models fit different tasks, you can route. A router inspects each request and sends it to the right model: easy or high-volume queries to a cheap fast model, hard ones to the expensive powerful model. You get most of the big model's quality at a fraction of the cost, because request difficulty is uneven and paying frontier prices for "reset my password" is waste.</p>
+        <div class="pm"><span class="tag">PM angle</span><p>Routing is one of the highest-leverage cost optimizations in AI products. It needs an evaluation layer to know which requests are hard, which is why evals come first. Plan the architecture so swapping and routing models is easy; the optimal mix today will change.</p></div>
+      </article>
+    </section>
+
+    <!-- PART 6 -->
+    <section class="part" id="part6">
+      <div class="part-head"><span class="pnum">PART 6</span><h2>Quality, Safety, and Operations</h2></div>
+
+      <article class="concept" id="c19">
+        <h3><span class="idx">19</span>What Are Evals</h3>
+        <p>An eval is a test suite for a probabilistic system. You assemble representative inputs with known good outputs (or scoring criteria), run your system against them, and get a score. Evals answer "did that change make it better or worse" without guessing. Because AI output is not deterministic, manual spot checks are not enough. Evals turn "it feels better" into a number you track across versions.</p>
+        <div class="pm"><span class="tag">PM angle</span><p>Evals are the single most important discipline in AI product work, and the most skipped. Without them you fly blind: you cannot safely change a prompt, swap a model, or ship an improvement, because you cannot tell if you helped or hurt. This is your regression suite, your quality bar, and your release gate. Build it before you scale.</p></div>
+      </article>
+
+      <article class="concept" id="c20">
+        <h3><span class="idx">20</span>LLM-as-a-Judge</h3>
+        <p>For open-ended outputs (a summary, an email, an answer) there is no single correct string to compare against, so classic automatic grading fails. The workaround: use a strong model to grade the output against a rubric. One AI judges another. It scales evaluation to cases where writing exact expected answers is impossible, and it correlates well with human judgment when the rubric is clear.</p>
+        <div class="pm"><span class="tag">PM angle</span><p>This makes evals practical for real products, most of which produce free-form text. Two cautions: the judge has biases (it favors longer, more confident answers), and you must validate it against human ratings before trusting it. Write a specific rubric, not "rate this 1 to 10." A vague judge gives vague signal.</p></div>
+      </article>
+
+      <article class="concept" id="c21">
+        <h3><span class="idx">21</span>What Are AI Guardrails</h3>
+        <p>Guardrails are the safety layer around the model. Checks on the way in (block prompt injection, off-topic, or abusive input) and on the way out (block harmful, off-brand, or non-compliant responses; catch leaked secrets or hallucinated claims). They constrain a probabilistic system into acceptable bounds. You need them because the model gives no hard guarantees; guardrails turn "usually fine" into "safe to ship."</p>
+        <div class="pm"><span class="tag">PM angle</span><p>Guardrails are a product requirement, not a nice-to-have, the moment you touch regulated content, brand risk, or untrusted input. They add latency and cost and will sometimes block good responses, so it is a real trade-off you own: how tight to set them, what to do on a block, how to let users appeal.</p></div>
+      </article>
+
+      <article class="concept" id="c22">
+        <h3><span class="idx">22</span>AI and LLM Observability</h3>
+        <p>Observability is your ability to see what your AI system is actually doing in production: what users ask, what the model returns, where it is slow, expensive, or failing, and why. Traditional monitoring watches uptime and errors; AI observability adds quality, cost per request, token usage, and output tracking. You need it because AI failures are quiet, a confident, well-formed, wrong answer, with nothing crashing.</p>
+        <div class="pm"><span class="tag">PM angle</span><p>Instrument from day one: log inputs, outputs, latency, cost, and user feedback. This data is not just for debugging, it is the raw material for your next round of evals and improvements. The teams that iterate fastest can see their system clearly. You cannot improve what you cannot observe.</p></div>
+      </article>
+
+      <article class="concept" id="c23">
+        <h3><span class="idx">23</span>How to Measure and Improve AI</h3>
+        <p>Improvement is a loop, not a launch. Observe real usage, find where it fails, form a hypothesis, change one thing (prompt, context, model, guardrail), measure against your evals, keep it if it helps. The levers, roughly by effort: prompt and context first (cheap, fast), then retrieval quality, then model choice, then fine-tuning (expensive, last resort). Always change one variable at a time and measure.</p>
+        <div class="pm"><span class="tag">PM angle</span><p>This is the actual day job of an AI PM after launch. Set up the measurement loop early and run it continuously. Reach for fine-tuning only after exhausting the cheap options, because most quality gains come from better prompts, context, and retrieval, not a fancier model.</p></div>
+      </article>
+    </section>
+
+    <!-- PART 7 -->
+    <section class="part" id="part7">
+      <div class="part-head"><span class="pnum">PART 7</span><h2>Strategy and Growth</h2></div>
+
+      <article class="concept" id="c24">
+        <h3><span class="idx">24</span>AI Product Strategy</h3>
+        <p>AI does not rewrite strategy, it sharpens the questions. Where does AI create defensible value versus where is it a feature any competitor bolts on next quarter? Your durable advantage rarely comes from the model, which everyone can rent. It comes from proprietary data, a tight feedback loop, deep workflow integration, and user trust. The trap is building on a capability the model providers will absorb into the base model for free.</p>
+        <div class="pm"><span class="tag">PM angle</span><p>Ask of any AI feature: what do I have that a competitor with the same model API does not? If the honest answer is "nothing," you are building on sand. Anchor strategy in assets that compound, your data, distribution, workflow lock-in, brand. The model is the commodity; what you wrap around it is the product.</p></div>
+      </article>
+
+      <article class="concept" id="c25">
+        <h3><span class="idx">25</span>The AI Flywheel</h3>
+        <p>The self-reinforcing loop behind AI products that pull away from the pack: more users generate more usage data, that data trains a better model, the better model attracts more users, and around it goes. Each turn makes the product harder to catch. This is the strategic version of the data moat. Early on it looks like a normal product; over time the compounding advantage becomes decisive.</p>
+        <div class="pm"><span class="tag">PM angle</span><p>Design the flywheel in from the start. Ask what data every interaction produces, how it flows back to improve the product, and how the improvement shows up for the next user. If usage does not make your product better, you are running a treadmill, not a flywheel.</p></div>
+      </article>
+    </section>
+
+    <!-- BONUS -->
+    <section class="part" id="partbonus">
+      <div class="part-head"><span class="pnum">BONUS</span><h2>Tooling</h2></div>
+      <article class="concept" id="cbonus">
+        <h3><span class="idx">+</span>Learn Claude Code</h3>
+        <p>Claude Code is a terminal-based AI coding agent. It reads your codebase, makes changes across files, runs commands, and iterates, all from the command line. The reason it is on a PM list: you no longer need to be a career engineer to build working prototypes. You describe what you want, review what it produces, and steer.</p>
+        <div class="pm"><span class="tag">PM angle</span><p>Prototyping is becoming a PM skill. A working demo settles arguments a slide never will, and it lets you test AI quality against real inputs before committing an engineering team. You do not need to become an engineer. You need to build enough to learn fast and communicate precisely.</p></div>
+      </article>
+    </section>
+
+    <!-- SUMMARY -->
+    <section class="summary" id="summary">
+      <h2>The shortest possible summary</h2>
+      <p class="sub">If you remember nothing else, remember these.</p>
+      <ul class="takeaways">
+        <li>AI products are <b>probabilistic</b>, so you manage quality distributions and failure modes, not exact outputs.</li>
+        <li><b>Embeddings</b> turn meaning into math; <b>RAG</b> uses them to ground answers in your own data. Most enterprise AI is RAG.</li>
+        <li>The model has no memory beyond its context window. <b>Context engineering, memory design, and fighting context rot</b> are where most quality lives, and they are under your control.</li>
+        <li><b>Agents</b> unlock multi-step tasks but multiply failure. Default to the simplest architecture; justify an agent by the task, not the hype.</li>
+        <li><b>Evals are non-negotiable.</b> Without a test suite for a probabilistic system, you cannot safely change anything. LLM-as-a-judge makes evals work for free-form output.</li>
+        <li><b>Guardrails and observability</b> turn "usually fine" into "safe to ship" and "we can see what's happening."</li>
+        <li>Improvement is a measured loop: <b>prompt and context first, model and fine-tuning last.</b></li>
+        <li><b>Model choice and routing</b> are recurring cost decisions, not one-time ones.</li>
+        <li>Strategy and moats come from your <b>data, workflow, and the flywheel</b>, not the model, which everyone can rent.</li>
+      </ul>
+    </section>
+
+    <!-- APPENDIX -->
+    <section class="appendix" id="appendix">
+      <h2>Source links</h2>
+      <p class="sub">The original posts are Sid Arora's "Just Another PM" newsletter (email-gated). Use them for deeper dives.</p>
+      <ol class="links">
+        <li><a href="https://www.newsletter.justanotherpm.com/p/ai-for-product-managers-the-complete">AI for PMs 101<span class="u">newsletter.justanotherpm.com/p/ai-for-product-managers-the-complete</span></a></li>
+        <li><a href="https://www.newsletter.justanotherpm.com/p/what-the-hell-is-an-ai-product-manager">What the Hell Is an AI PM<span class="u">newsletter.justanotherpm.com/p/what-the-hell-is-an-ai-product-manager</span></a></li>
+        <li><a href="https://www.newsletter.justanotherpm.com/p/fundamentals-of-ai-part-1-ai-ml-dl">Fundamentals of AI (AI/ML/DL)<span class="u">newsletter.justanotherpm.com/p/fundamentals-of-ai-part-1-ai-ml-dl</span></a></li>
+        <li><a href="https://www.newsletter.justanotherpm.com/p/fundamentals-of-ai-part-2-rag-and">What Is RAG<span class="u">newsletter.justanotherpm.com/p/fundamentals-of-ai-part-2-rag-and</span></a></li>
+        <li><a href="https://www.newsletter.justanotherpm.com/p/what-is-context-engineering-and-why">Context Engineering<span class="u">newsletter.justanotherpm.com/p/what-is-context-engineering-and-why</span></a></li>
+        <li><a href="https://www.newsletter.justanotherpm.com/p/when-should-a-pm-build-an-agent-instead">What Are AI Agents<span class="u">newsletter.justanotherpm.com/p/when-should-a-pm-build-an-agent-instead</span></a></li>
+        <li><a href="https://www.newsletter.justanotherpm.com/p/ai-product-strategy-how-to-master">AI Product Strategy<span class="u">newsletter.justanotherpm.com/p/ai-product-strategy-how-to-master</span></a></li>
+        <li><a href="https://www.newsletter.justanotherpm.com/p/from-chatbot-to-a-personal-assistant">Agentic AI<span class="u">newsletter.justanotherpm.com/p/from-chatbot-to-a-personal-assistant</span></a></li>
+        <li><a href="https://www.newsletter.justanotherpm.com/p/what-are-ai-guardrails-and-how-should">AI Guardrails<span class="u">newsletter.justanotherpm.com/p/what-are-ai-guardrails-and-how-should</span></a></li>
+        <li><a href="https://www.newsletter.justanotherpm.com/p/what-are-evals-and-why-are-they-important">What Are Evals<span class="u">newsletter.justanotherpm.com/p/what-are-evals-and-why-are-they-important</span></a></li>
+        <li><a href="https://www.newsletter.justanotherpm.com/p/what-is-ai-observability">AI and LLM Observability<span class="u">newsletter.justanotherpm.com/p/what-is-ai-observability</span></a></li>
+        <li><a href="https://www.newsletter.justanotherpm.com/p/what-are-embeddings-and-how-they">What Are Embeddings<span class="u">newsletter.justanotherpm.com/p/what-are-embeddings-and-how-they</span></a></li>
+        <li><a href="https://www.newsletter.justanotherpm.com/p/everything-you-must-know-about-mixture-of-experts-moe">Mixture of Experts (MoE)<span class="u">newsletter.justanotherpm.com/p/everything-you-must-know-about-mixture-of-experts-moe</span></a></li>
+        <li><a href="https://www.newsletter.justanotherpm.com/p/llm-as-a-judge-how-one-ai-grades-another-and-when-to-trust-it">LLM-as-a-Judge<span class="u">newsletter.justanotherpm.com/p/llm-as-a-judge-how-one-ai-grades-another-and-when-to-trust-it</span></a></li>
+        <li><a href="https://www.newsletter.justanotherpm.com/p/prompt-caching-can-cut-your-llm-bill-by-70-here-s-what-it-does">Prompt Caching<span class="u">newsletter.justanotherpm.com/p/prompt-caching-can-cut-your-llm-bill-by-70-here-s-what-it-does</span></a></li>
+        <li><a href="https://www.newsletter.justanotherpm.com/p/what-is-synthetic-data-and-why-is-it-replacing-human-labelling">What Is Synthetic Data<span class="u">newsletter.justanotherpm.com/p/what-is-synthetic-data-and-why-is-it-replacing-human-labelling</span></a></li>
+        <li><a href="https://www.newsletter.justanotherpm.com/p/why-your-ai-agent-always-forgets-users">Why Agents Always Forget<span class="u">newsletter.justanotherpm.com/p/why-your-ai-agent-always-forgets-users</span></a></li>
+        <li><a href="https://www.newsletter.justanotherpm.com/p/what-is-context-rot-and-why-your-ai-gets-dumber-the-longer-you-talk-to-it">Context Rot<span class="u">newsletter.justanotherpm.com/p/what-is-context-rot-and-why-your-ai-gets-dumber-the-longer-you-talk-to-it</span></a></li>
+        <li><a href="https://www.newsletter.justanotherpm.com/p/chatgpt-made-you-smarter-ai-agents">AI Agents Will Replace You<span class="u">newsletter.justanotherpm.com/p/chatgpt-made-you-smarter-ai-agents</span></a></li>
+        <li><a href="https://www.newsletter.justanotherpm.com/p/what-is-llm-routing-and-when-should-you-use-multiple-models">LLM Routing<span class="u">newsletter.justanotherpm.com/p/what-is-llm-routing-and-when-should-you-use-multiple-models</span></a></li>
+        <li><a href="https://www.newsletter.justanotherpm.com/p/how-do-llms-actually-learn-to-be-helpful">LLMs Learn to Be Helpful<span class="u">newsletter.justanotherpm.com/p/how-do-llms-actually-learn-to-be-helpful</span></a></li>
+        <li><a href="https://www.newsletter.justanotherpm.com/p/make-your-ai-product-do-what-you">How to Measure/Improve AI<span class="u">newsletter.justanotherpm.com/p/make-your-ai-product-do-what-you</span></a></li>
+        <li><a href="https://www.newsletter.justanotherpm.com/p/the-ai-flywheel-why-some-ai-products-become-viral">The AI Flywheel<span class="u">newsletter.justanotherpm.com/p/the-ai-flywheel-why-some-ai-products-become-viral</span></a></li>
+        <li><a href="https://www.newsletter.justanotherpm.com/p/the-biggest-ai-model-for-your-product">Which AI Model to Use<span class="u">newsletter.justanotherpm.com/p/the-biggest-ai-model-for-your-product</span></a></li>
+        <li><a href="https://www.newsletter.justanotherpm.com/p/learn-claude-code-for-free-without-coding-experience">Learn Claude Code<span class="u">newsletter.justanotherpm.com/p/learn-claude-code-for-free-without-coding-experience</span></a></li>
+      </ol>
+    </section>
+
+  </main>
+</div>
+</div>
+
+<footer>
+  <div class="wrap">
+    Curriculum curated by Sid Arora (<a href="https://www.linkedin.com/posts/siddhartharoraisb_as-an-ai-pm-please-master-these-concepts-share-7479112436957130752-DjdS/">original LinkedIn post</a>). Explanations written as a self-contained learning guide.
+  </div>
+</footer>
+
+</body>
+</html>
